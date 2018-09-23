@@ -8,19 +8,19 @@ close( FILE );
 my @newlines;
 foreach ( @lines )
 {
-    if ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4\n$5/sg )
+    if ( s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4\n$5/sg )
     {
         &search_replace();
 
-    } elsif ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4/sg )
+    } elsif ( s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4/sg )
     {
         &search_replace();
 
-    } elsif ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3/sg )
+    } elsif ( s/([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3/sg )
     {
         &search_replace();
 
-    } elsif ( $_ =~ s/([a-e]\).*)([a-e]\))/$1\n$2/sg )
+    } elsif ( s/([a-e]\).*)([a-e]\))/$1\n$2/sg )
     {
         &search_replace();
     } else
@@ -31,6 +31,18 @@ foreach ( @lines )
 
 sub search_replace
 {
+    # Format Example:
+    # ===============
+
+    #     ;02) The Earth’s axis is always tilted at an angle of _________ degrees to the plane of the ecliptic.
+    #
+    #     a) 15
+    #     b) 23.5
+    #     c) 33.3
+    #     d) 66.5
+    #     e) 90
+    # ===============
+
     s/^(a\))/\n$1/g;
     s/^Answer: ([a-e])?//g;
     s/^(\d{1,2}\))/\;$1/g;
@@ -38,8 +50,8 @@ sub search_replace
     push( @newlines, $_ )
 }
 
-# print @newlines;
-
+# Rewrite to the FILE
+# change the file path to write in a different file
 open( FILE, ">H:\/Desktop\/regex_quizlet.txt" ) || die "File not found";
 print FILE @newlines;
 close( FILE );
