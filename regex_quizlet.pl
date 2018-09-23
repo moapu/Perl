@@ -10,44 +10,32 @@ foreach ( @lines )
 {
     if ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4\n$5/sg )
     {
-        $_ =~ s/^(a\))/\n$1/sg;
-        $_ =~ s/^Answer: [a-e]//sg;
-        $_ =~ s/^(\d{1,2}\))/\;$1/sg;
-        $_ =~ s/^(;\d{1,2})/\n$1/sg;
-        push( @newlines, $_ )
+        &search_replace();
 
     } elsif ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3\n$4/sg )
     {
-        $_ =~ s/^(a\))/\n$1/sg;
-        $_ =~ s/^Answer: [a-e]//sg;
-        $_ =~ s/^(\d{1,2}\))/\;$1/sg;
-        $_ =~ s/^(;\d{1,2})/\n$1/sg;
-        push( @newlines, $_ )
+        &search_replace();
 
     } elsif ( $_ =~ s/([a-e]\).*)([a-e]\).*)([a-e]\))/$1\n$2\n$3/sg )
     {
-        $_ =~ s/^(a\))/\n$1/sg;
-        $_ =~ s/^Answer: [a-e]//sg;
-        $_ =~ s/^(\d{1,2}\))/\;$1/sg;
-        $_ =~ s/^(;\d{1,2})/\n$1/sg;
-        push( @newlines, $_ )
+        &search_replace();
 
     } elsif ( $_ =~ s/([a-e]\).*)([a-e]\))/$1\n$2/sg )
     {
-        $_ =~ s/^(a\))/\n$1/sg;
-        $_ =~ s/^Answer: [a-e]//sg;
-        $_ =~ s/^(\d{1,2}\))/\;$1/sg;
-        $_ =~ s/^(;\d{1,2})/\n$1/sg;
-        push( @newlines, $_ )
-
+        &search_replace();
     } else
     {
-        $_ =~ s/^(a\))/\n$1/sg;
-        $_ =~ s/^Answer: ([a-e])?//sg;
-        $_ =~ s/^(\d{1,2}\))/\;$1/sg;
-        $_ =~ s/^(;\d{1,2})/\n$1/sg;
-        push( @newlines, $_ )
+        &search_replace();
     }
+}
+
+sub search_replace
+{
+    s/^(a\))/\n$1/g;
+    s/^Answer: ([a-e])?//g;
+    s/^(\d{1,2}\))/\;$1/g;
+    s/^(;\d{1,2})/\n$1/g;
+    push( @newlines, $_ )
 }
 
 # print @newlines;
